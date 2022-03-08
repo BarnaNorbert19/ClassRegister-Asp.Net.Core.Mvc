@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "Courses";
+    Layout = "_AdminLayout";
+    string? error = TempData["Error"] as string;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Duration</th>
+        </tr>
+    </thead>
+    <tbody id="courses-list">
+    </tbody>
+</table>
+<div class="d-flex justify-content-center" id="user-spinner">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(error))
+{
+    <div class="alert alert-danger" role="alert">
+        @error
+    </div>
+}
+

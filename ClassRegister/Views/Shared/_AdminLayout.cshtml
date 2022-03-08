@@ -1,0 +1,56 @@
+﻿@{
+    string[] menuItems = { "Home", "Users", "Courses" };
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - @ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Admin panel</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="nav-items">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    @for (var i = 0; i < menuItems.Length; i++)
+                    {
+                        <li class="nav-item">
+                            @if (ViewData["Title"] == menuItems[i])
+                            {
+                                <a class="nav-link active" aria-current="page">@menuItems[i]</a>
+                            }
+                            else
+                            {
+                                <a class="nav-link" asp-action="@menuItems[i]" asp-controller="Admin">@menuItems[i]</a>
+                            }
+                        </li>
+                    }
+                </ul>
+
+                <span class="navbar-text">
+                    @User.Identity.Name
+                </span>
+                <a asp-action="Logout" asp-controller="Home" class="navbar-text">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="w-100 h-100" id="main-view">
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

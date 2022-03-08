@@ -1,0 +1,21 @@
+﻿@model IEnumerable<User>
+@{
+    int count = 0;
+}
+
+@foreach (var item in Model)
+{
+    <tr>
+        <th scope="row">@(count + 1)</th>
+        <td>@item.UserInfo.Firstname</td>
+        <td>@item.UserInfo.Lastname</td>
+        <td>@item.UserInfo.Phone</td>
+        <td>@item.UserInfo.Email</td>
+        <td>@item.UserAccount.LoginName</td>
+        <td>@item.UserAccount.Role</td>
+        <td>
+            <a href="#" class="edit-link" data-bs-toggle="modal" data-bs-target="#user-modal">Edit</a>
+            <a asp-action="DeleteUser" asp-controller="Admin" asp-route-id="@item.Id" class="delete-user">Delete</a>
+        </td>
+    </tr>
+}
