@@ -26,8 +26,21 @@ function onUsersPageLoad() {
             });
         };
 
-        loadPartialView("LoadUsers", "#user-list", userEditClick);
-        $("#user-spinner").remove();
+        var userPageNavigationClick = function () {
+            var a = document.getElementsByClassName('page-link');
+
+            for (let i = 0; i < a.length; i++) {
+                a[i].addEventListener('click', event => {
+
+                    loadPartialView("LoadUsers", "#table-body", userEditClick, a[i].innerHTML);
+                    loadPartialView("LoadUsersPageNavigation", "#page-navigation", userPageNavigationClick, a[i].innerHTML);
+                });
+            }
+
+        };
+
+        Promise.all([loadPartialView("LoadUsers", "#table-body", userEditClick), loadPartialView("LoadUsersPageNavigation", "#page-navigation", userPageNavigationClick)])
+            .then($("#user-spinner").remove());
     }
 }
 
@@ -45,17 +58,15 @@ function loadPartialView(url, replace) {
         success: function (data) {
             onSuccessDelegate
             $(replace).html(data);
-
-
         }
     });
 }
 
-function loadPartialView(url, replace, onSuccessDelegate) {
+function loadPartialView(url, replace, onSuccessDelegate, data) {
     $.ajax({
         type: "POST",
         url: url,
-        data: $("form").serialize(),
+        data: {page: data},
         success: function (data) {
             $(replace).html(data);
 
@@ -63,3 +74,4 @@ function loadPartialView(url, replace, onSuccessDelegate) {
         }
     });
 }
+

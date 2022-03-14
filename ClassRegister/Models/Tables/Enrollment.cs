@@ -5,20 +5,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ClassRegister.Models.Tables
 {
     [Keyless]
-    public class Enrollments
+    public class Enrollment
     {
-        [ForeignKey("Courses")]
+        [ForeignKey("Courses"), Column("course_id")]
         public int CourseId { get; set; }
         
-        [ForeignKey("Persons")]
+        [ForeignKey("Persons"), Column("student_id")]
         public string StudentId { get; set; }
 
-        [DataType(DataType.Date)]
+        [DataType(DataType.Date), Column("enrollment_date")]
         public DateTime EnrollmentDate { get; set; }
 
 
         //Navigations
-        public virtual Courses Courses { get; set; }
-        public virtual Persons Persons { get; set; }
+        public virtual Course Courses { get; set; }
+        public virtual Person Persons { get; set; }
     }
 }

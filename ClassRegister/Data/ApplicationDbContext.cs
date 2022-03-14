@@ -5,12 +5,12 @@ namespace ClassRegister.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public DbSet<Persons> Person { get; set; }
-        public DbSet<Accounts> Account { get; set; }
-        public DbSet<Courses> Course { get; set; }
-        public DbSet<Enrollments> Enrollment { get; set; }
-        public DbSet<Grades> Grade { get; set; }
-        public DbSet<Subjects> Subject { get; set; }
+        public DbSet<Person> Person { get; set; }
+        public DbSet<Account> Account { get; set; }
+        public DbSet<Course> Course { get; set; }
+        public DbSet<Enrollment> Enrollment { get; set; }
+        public DbSet<Grade> Grade { get; set; }
+        public DbSet<Subject> Subject { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {

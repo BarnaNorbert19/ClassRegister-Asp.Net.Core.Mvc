@@ -6,19 +6,19 @@ namespace ClassRegister.Models
     /// <summary>
     /// Wraps together the persons and the accounts table
     /// </summary>
-    public class User
+    public class UserModel
     {
         public string Id { get => UserInfo.Id; }
-        public Accounts? UserAccount { get; set; }
-        public Persons? UserInfo { get; set; }
+        public Account? UserAccount { get; set; }
+        public Person? UserInfo { get; set; }
 
-        public User(Accounts? userAccount, Persons? userInfo)
+        public UserModel(Account? userAccount, Person? userInfo)
         {
             UserAccount = userAccount;
             UserInfo = userInfo;
         }
 
-        public User()
+        public UserModel()
         { }
 
         public bool GenerateUserData()

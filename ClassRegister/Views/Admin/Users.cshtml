@@ -1,11 +1,10 @@
-﻿@model User
+﻿@model UserModel
 
 @{
     ViewData["Title"] = "Users";
     Layout = "_AdminLayout";
     string? error = TempData["Error"] as string;
 }
-
 <table class="table">
     <thead>
         <tr>
@@ -19,32 +18,19 @@
             <th scope="col">Action</th>
         </tr>
     </thead>
-    <tbody id="user-list">
+    <tbody id="table-body">
     </tbody>
 </table>
+
 <div class="d-flex justify-content-center" id="user-spinner">
     <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
     </div>
 </div>
 
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+<div id="page-navigation" class="d-flex justify-content-center">
+
+</div>
 
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#user-modal" id="add-btn">
     Add
@@ -52,6 +38,8 @@
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#user-upload-modal" id="upload-btn">
     Upload
 </button>
+
+
 
 @if (!string.IsNullOrEmpty(error))
 {
@@ -71,7 +59,7 @@
                 <form asp-controller="Admin" asp-action="AddUser" method="post" id="user-form">
                     <div class="input-group input-group-sm mb-3" style="display: none;">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Id</span>
-                        <input asp-for="UserInfo.Id" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                        <input for="" type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
                     </div>
 
                     <div class="input-group input-group-sm mb-3">

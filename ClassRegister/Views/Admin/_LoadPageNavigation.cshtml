@@ -1,0 +1,10 @@
+﻿@model NavigationModel
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @for (var i = @Model.DisplayStart; i <= @Model.DisplayEnd; i++)
+        {
+            <li class="page-item"><a class="page-link" href="#">@i</a></li>
+        }
+    </ul>
+</nav>

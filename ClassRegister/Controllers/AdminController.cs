@@ -16,6 +16,7 @@ namespace ClassRegister.Controllers
         private readonly ILogger<AdminController> _logger;
         private readonly ApplicationDbContext _db;
         private readonly Hosting.IHostingEnvironment _environment;
+        private const int _itemsPerPage = 4;
 
         public AdminController(ILogger<AdminController> logger, ApplicationDbContext db, Hosting.IHostingEnvironment environment)
         {
@@ -44,18 +45,32 @@ namespace ClassRegister.Controllers
             return View();
         }
 
-        public IActionResult LoadUsers(int load = 1)
+        public IActionResult LoadUsers(int page = 1)
         {
-            IQueryable<User>? users = from persons in _db.Person
+            var users = (from persons in _db.Person
                                       join accounts in _db.Account
                                       on persons.Id equals accounts.Id
-                                      select new User { UserInfo = persons, UserAccount = accounts };
+                                      orderby persons.Firstname
+                                      select new UserModel { UserInfo = persons, UserAccount = accounts }).Skip((page - 1) * _itemsPerPage).Take(_itemsPerPage);
 
-            return PartialView("_LoadUsers", users.Take(load));
+            return PartialView("_LoadUsers", users);
+        }
+
+        public IActionResult LoadUsersPageNavigation(int page = 1)
+        {
+            var userCount = (from persons in _db.Person
+                         join accounts in _db.Account
+                         on persons.Id equals accounts.Id
+                         orderby persons.Firstname
+                         select new UserModel { UserInfo = persons, UserAccount = accounts }).Count();
+
+            var navigation = new NavigationModel(userCount, 1, _itemsPerPage, page);
+
+            return PartialView("_LoadPageNavigation", navigation);
         }
 
         [HttpPost]
-        public IActionResult AddUser(User input)
+        public IActionResult AddUser(UserModel input)
         {
             try
             {
@@ -96,15 +111,11 @@ namespace ClassRegister.Controllers
 
         public IActionResult DeleteUser(string id)
         {
-            var result = from persons in _db.Person
+            var user = (from persons in _db.Person
                          join accounts in _db.Account
                          on persons.Id equals accounts.Id
                          where persons.Id == id
-                         select new User { UserInfo = persons, UserAccount = accounts };
-
-            CheckMultipleRows(result);
-
-            User? user = result.FirstOrDefault();
+                         select new UserModel { UserInfo = persons, UserAccount = accounts }).FirstOrDefault();
 
             if (user is null)
             {
@@ -115,13 +126,13 @@ namespace ClassRegister.Controllers
             _ = _db.Remove(user.UserInfo);
             _ = _db.SaveChanges();
 
-            _logger.LogError($"User deleted successfully: {result.First().Id} - by: {User.Identity.Name}");
+            _logger.LogInformation($"User deleted successfully: {user.Id}, {user.UserAccount.LoginName} - by: {User.Identity.Name}");
 
             return Redirect("/Admin/Users");
         }
 
         [HttpPost]
-        public IActionResult EditUser(User input)
+        public IActionResult EditUser(UserModel input)
         {
             try
             {
@@ -133,17 +144,14 @@ namespace ClassRegister.Controllers
                 return BadRequest();
             }
 
-            var result = from persons in _db.Person
+            var user = (from persons in _db.Person
                          join accounts in _db.Account
                          on persons.Id equals accounts.Id
                          where persons.Id == input.Id
-                         select new User { UserInfo = persons, UserAccount = accounts };
+                         select new UserModel { UserInfo = persons, UserAccount = accounts }).FirstOrDefault();
 
-            CheckMultipleRows(result);
-            var user = result.FirstOrDefault();
-
-            Helper.MergeObjects<Accounts>(user.UserAccount, input.UserAccount);
-            Helper.MergeObjects<Persons>(user.UserInfo, input.UserInfo);
+            Helper.MergeObjects<Account>(user.UserAccount, input.UserAccount);
+            Helper.MergeObjects<Person>(user.UserInfo, input.UserInfo);
 
             _db.SaveChanges();
 
@@ -207,10 +215,5 @@ namespace ClassRegister.Controllers
             return View();
         }
 
-        private void CheckMultipleRows(IQueryable<User> users)
-        {
-            if (users.Count() > 1)
-                _logger.LogError($"There are multiple rows with the same id: {users.First().Id}");
-        }
     }
 }

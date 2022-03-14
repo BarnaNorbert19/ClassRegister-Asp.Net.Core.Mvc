@@ -5,22 +5,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ClassRegister.Models.Tables
 {
     [Keyless]
-    public class Grades
+    public class Grade
     {
-        [ForeignKey("Courses")]
+        [ForeignKey("Courses"), Column("course_id")]
         public int CourseId { get; set; }
         
-        [ForeignKey("Student"), Column(TypeName = "varchar(150)")]
+        [ForeignKey("Student"), Column("student_id", TypeName = "varchar(150)")]
         public string StudentId { get; set; }
 
-        [Column(TypeName = "int(1)"), Range(1, 5, ErrorMessage = "Mark must be between 1 and 5")]
+        [Column("mark", TypeName = "int(1)"), Range(1, 5, ErrorMessage = "Mark must be between 1 and 5")]
         public int Mark { get; set; }
 
 
 
         //Navigations
         
-        public virtual Courses Courses { get; set; }
-        public virtual Persons Student { get; set; }
+        public virtual Course Courses { get; set; }
+        public virtual Person Student { get; set; }
     }
 }

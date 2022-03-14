@@ -19,45 +19,52 @@ namespace ClassRegister.Migrations
                 .HasAnnotation("ProductVersion", "6.0.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Accounts", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Account", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("LoginName")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("login_name");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("password");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("varchar(7)");
+                        .HasColumnType("varchar(7)")
+                        .HasColumnName("role");
 
                     b.Property<string>("Salt")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasColumnType("longtext")
+                        .HasColumnName("salt");
 
                     b.HasKey("Id");
 
                     b.ToTable("Account");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Courses", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Course", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnOrder(0);
 
                     b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
+                        .HasColumnType("time")
+                        .HasColumnName("duration");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("name");
 
                     b.Property<int>("SubjectId")
                         .HasColumnType("int");
@@ -66,7 +73,7 @@ namespace ClassRegister.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(36)");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.HasIndex("SubjectId");
 
@@ -75,17 +82,20 @@ namespace ClassRegister.Migrations
                     b.ToTable("Course");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Enrollments", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Enrollment", b =>
                 {
                     b.Property<int>("CourseId")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("course_id");
 
                     b.Property<DateTime>("EnrollmentDate")
-                        .HasColumnType("datetime(6)");
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("enrollment_date");
 
                     b.Property<string>("StudentId")
                         .IsRequired()
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("student_id");
 
                     b.HasIndex("CourseId");
 
@@ -94,85 +104,94 @@ namespace ClassRegister.Migrations
                     b.ToTable("Enrollment");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Grades", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Grade", b =>
                 {
-                    b.Property<int>("CourseID")
-                        .HasColumnType("int");
+                    b.Property<int>("CourseId")
+                        .HasColumnType("int")
+                        .HasColumnName("course_id");
 
                     b.Property<int>("Mark")
-                        .HasColumnType("int(1)");
+                        .HasColumnType("int(1)")
+                        .HasColumnName("mark");
 
                     b.Property<string>("StudentId")
                         .IsRequired()
-                        .HasColumnType("varchar(150)");
+                        .HasColumnType("varchar(150)")
+                        .HasColumnName("student_id");
 
-                    b.HasIndex("CourseID");
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("StudentId");
 
                     b.ToTable("Grade");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Persons", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Person", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(36)");
+                        .HasColumnType("varchar(36)")
+                        .HasColumnName("id");
 
                     b.Property<string>("Email")
-                        .HasColumnType("varchar(100)");
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("email");
 
                     b.Property<string>("Firstname")
                         .IsRequired()
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("firstname");
 
                     b.Property<string>("Lastname")
                         .IsRequired()
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("lastname");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("phone");
 
                     b.HasKey("Id");
 
                     b.ToTable("Person");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Subjects", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Subject", b =>
                 {
-                    b.Property<int>("ID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnOrder(0);
+                        .HasColumnName("id");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(30)");
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("name");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("Subject");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Accounts", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Account", b =>
                 {
-                    b.HasOne("ClassRegister.Models.Tables.Persons", "Persons")
+                    b.HasOne("ClassRegister.Models.Tables.Person", "Persons")
                         .WithOne("Accounts")
-                        .HasForeignKey("ClassRegister.Models.Tables.Accounts", "Id")
+                        .HasForeignKey("ClassRegister.Models.Tables.Account", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Persons");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Courses", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Course", b =>
                 {
-                    b.HasOne("ClassRegister.Models.Tables.Subjects", "Subjects")
+                    b.HasOne("ClassRegister.Models.Tables.Subject", "Subjects")
                         .WithMany()
                         .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClassRegister.Models.Tables.Persons", "Persons")
+                    b.HasOne("ClassRegister.Models.Tables.Person", "Persons")
                         .WithMany()
                         .HasForeignKey("TeacherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -183,15 +202,15 @@ namespace ClassRegister.Migrations
                     b.Navigation("Subjects");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Enrollments", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Enrollment", b =>
                 {
-                    b.HasOne("ClassRegister.Models.Tables.Courses", "Courses")
+                    b.HasOne("ClassRegister.Models.Tables.Course", "Courses")
                         .WithMany()
                         .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClassRegister.Models.Tables.Persons", "Persons")
+                    b.HasOne("ClassRegister.Models.Tables.Person", "Persons")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -202,15 +221,15 @@ namespace ClassRegister.Migrations
                     b.Navigation("Persons");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Grades", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Grade", b =>
                 {
-                    b.HasOne("ClassRegister.Models.Tables.Courses", "Courses")
+                    b.HasOne("ClassRegister.Models.Tables.Course", "Courses")
                         .WithMany()
-                        .HasForeignKey("CourseID")
+                        .HasForeignKey("CourseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClassRegister.Models.Tables.Persons", "Student")
+                    b.HasOne("ClassRegister.Models.Tables.Person", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -221,7 +240,7 @@ namespace ClassRegister.Migrations
                     b.Navigation("Student");
                 });
 
-            modelBuilder.Entity("ClassRegister.Models.Tables.Persons", b =>
+            modelBuilder.Entity("ClassRegister.Models.Tables.Person", b =>
                 {
                     b.Navigation("Accounts")
                         .IsRequired();

@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClassRegister.Models.Tables
 {
-    public class Subjects
+    public class Subject
     {
-        [Key, Column(Order = 0), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, Column("id"), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required, Column(TypeName = "varchar(30)")]
+        [Required, Column("name", TypeName = "varchar(30)")]
         public string Name { get; set; }
     }
 }

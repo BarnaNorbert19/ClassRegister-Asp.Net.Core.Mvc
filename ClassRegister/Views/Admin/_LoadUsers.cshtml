@@ -1,12 +1,14 @@
-﻿@model IEnumerable<User>
+﻿@model IQueryable<UserModel>?
 @{
     int count = 0;
 }
 
+
 @foreach (var item in Model)
 {
+    @(count += 1)
     <tr>
-        <th scope="row">@(count + 1)</th>
+        <th scope="row">@count</th>
         <td>@item.UserInfo.Firstname</td>
         <td>@item.UserInfo.Lastname</td>
         <td>@item.UserInfo.Phone</td>
